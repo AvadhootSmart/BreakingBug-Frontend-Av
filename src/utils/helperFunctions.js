@@ -1,4 +1,5 @@
-export const timeAgo = (reviewDate) => {//date -> reviewDate
+export const timeAgo = (reviewDate) => {
+  //date -> reviewDate
   const options = { year: "numeric", month: "long", day: "numeric" };
 
   const today = new Date();

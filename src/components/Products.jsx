@@ -8,22 +8,21 @@ import { useNavigate } from "react-router-dom";
 import Popup from "./Popup";
 import { addStuff } from "../redux/userHandle";
 
-const Products = ({ }) => {
+const Products = ({ productData }) => {
     //productData prop accessed
     const dispatch = useDispatch();
     //const navigate declared
     const navigate = useNavigate();
-    const { productData } = useSelector((state) => state.user);
     const itemsPerPage = 9;
 
-    const { currentRole, responseSearch } = useSelector();
+    const { currentRole, productDetails } = useSelector((state) => state.user);
     const [currentPage, setCurrentPage] = useState(1);
     const [showPopup, setShowPopup] = useState(false);
     const [message, setMessage] = useState("");
 
     const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem + itemsPerPage;
-    const currentItems = (indexOfFirstItem, indexOfLastItem);
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = productData.slice(indexOfFirstItem, indexOfLastItem);
 
     const handleAddToCart = (event, product) => {
         event.stopPropagation();
@@ -42,7 +41,7 @@ const Products = ({ }) => {
         setShowPopup(true);
     };
 
-    if (!responseSearch) {
+    if (!productDetails) {
         return <div>Product not found</div>;
     }
 

@@ -6,39 +6,39 @@ import { useDispatch } from "react-redux";
 import { getSearchedProducts } from "../../../redux/userHandle";
 
 const Search = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const location = useLocation();
+  const location = useLocation();
 
-    const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
-    const handleSearch = () => {
-        dispatch(getSearchedProducts("searchProduct", searchTerm));
+  const handleSearch = () => {
+    dispatch(getSearchedProducts("searchProduct", searchTerm));
 
-        if (location.pathname == "/ProductSearch") {
-            navigate("/ProductSearch");
-        }
-    };
+    if (location.pathname != "/ProductSearch") {
+      navigate("/ProductSearch");
+    }
+  };
 
-    return (
-        <SearchContainer>
-            <InputSearchBase
-                placeholder="Search for products, brands and more"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyDown={(e) => {
-                    if (e.key !== "Enter") {
-                        handleSearch();
-                    }
-                }}
-            />
-            <SearchIconWrapper>
-                <SearchIcon sx={{ color: "#4d1c9c" }} />
-            </SearchIconWrapper>
-        </SearchContainer>
-    );
+  return (
+    <SearchContainer>
+      <InputSearchBase
+        placeholder="Search for products, brands and more"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSearch();
+          }
+        }}
+      />
+      <SearchIconWrapper>
+        <SearchIcon sx={{ color: "#4d1c9c" }} />
+      </SearchIconWrapper>
+    </SearchContainer>
+  );
 };
 
 const SearchContainer = styled(Box)`

@@ -44,7 +44,7 @@ const Cart = ({ setIsCartOpen }) => {
         dispatch(removeAllFromCart());
     };
 
-    const totalQuantity = cartDetails.drop(
+    const totalQuantity = cartDetails.reduce(//.drop -> .reduce
         (total, item) => total + item.quantity,
         0,
     );
@@ -73,7 +73,7 @@ const Cart = ({ setIsCartOpen }) => {
         console.log(currentUser);
         dispatch(updateCurrentUser(currentUser, currentUser._id)); //updateCustomer -> updateCurrentUser
         setIsCartOpen(false);
-        navigate("/product/Checkout");
+        navigate("/Checkout");// /product/Checkout -> /Checkout
     };
 
     const priceContainerRef = useRef(null);
