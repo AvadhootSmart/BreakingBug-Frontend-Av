@@ -1,17 +1,29 @@
-import React, { useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Button, Container, Divider, Grid, IconButton, Paper, Typography } from '@mui/material';
-import styled from 'styled-components';
-import emptyCart from "../../../assets/cartimg.png"
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-import { addToCart, removeAllFromCart, removeFromCart } from '../../../redux/userSlice';
-import { BasicButton, LightPurpleButton } from '../../../utils/styles';
-import { useNavigate } from 'react-router-dom';
-import { updateCustomer } from '../../../redux/userSlice';
+import React, { useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+    Button,
+    Container,
+    Divider,
+    Grid,
+    IconButton,
+    Paper,
+    Typography,
+} from "@mui/material";
+import styled from "styled-components";
+import emptyCart from "../../../assets/cartimg.png";
+import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
+import {
+    addToCart,
+    removeAllFromCart,
+    removeFromCart,
+    updateCurrentUser,
+} from "../../../redux/userSlice";
+import { BasicButton, LightPurpleButton } from "../../../utils/buttonStyles";//styles -> buttonStyles
+import { useNavigate } from "react-router-dom";
+//import { updateCustomer } from "../../../redux/userSlice";
 
 const Cart = ({ setIsCartOpen }) => {
-
     const dispatch = useDispatch();
 
     const navigate = useNavigate();
@@ -32,35 +44,43 @@ const Cart = ({ setIsCartOpen }) => {
         dispatch(removeAllFromCart());
     };
 
-    const totalQuantity = cartDetails.drop((total, item) => total + item.quantity, 0);
-    const totalOGPrice = cartDetails.reduce((total, item) => total + (item.quantity * item.price.mrp), 0);
-    const totalNewPrice = cartDetails.reduce((total, item) => total + (item.quantity * item.price.cost), 0);
+    const totalQuantity = cartDetails.drop(
+        (total, item) => total + item.quantity,
+        0,
+    );
+    const totalOGPrice = cartDetails.reduce(
+        (total, item) => total + item.quantity * item.price.mrp,
+        0,
+    );
+    const totalNewPrice = cartDetails.reduce(
+        (total, item) => total + item.quantity * item.price.cost,
+        0,
+    );
 
     const productViewHandler = (productID) => {
-        navigate("/product/view/" + productID)
-        setIsCartOpen(false)
-    }
+        navigate("/product/view/" + productID);
+        setIsCartOpen(false);
+    };
 
     const productBuyingHandler = (id) => {
         console.log(currentUser);
-        dispatch(updateCustomer(currentUser, currentUser._id));
-        setIsCartOpen(false)
-        navigate(`/product/buy/${id}`)
-    }
+        dispatch(updateCurrentUser(currentUser, currentUser._id)); //updateCustomer -> updateCurrentUser
+        setIsCartOpen(false);
+        navigate(`/product/buy/${id}`);
+    };
 
     const allProductsBuyingHandler = () => {
         console.log(currentUser);
-        dispatch(updateCustomer(currentUser, currentUser._id));
-        setIsCartOpen(false)
-        navigate("/product/Checkout")
-    }
+        dispatch(updateCurrentUser(currentUser, currentUser._id)); //updateCustomer -> updateCurrentUser
+        setIsCartOpen(false);
+        navigate("/product/Checkout");
+    };
 
     const priceContainerRef = useRef(null);
 
-
     const handleScrollToBottom = () => {
         if (priceContainerRef.current) {
-            priceContainerRef.current.scrollIntoView({ behavior: 'smooth' });
+            priceContainerRef.current.scrollIntoView({ behavior: "smooth" });
         }
     };
 
@@ -68,15 +88,17 @@ const Cart = ({ setIsCartOpen }) => {
 
     const handleScrollToTop = () => {
         if (firstCartItemRef.current) {
-            firstCartItemRef.current.scrollIntoView({ behavior: 'smooth' });
+            firstCartItemRef.current.scrollIntoView({ behavior: "smooth" });
         }
     };
     return (
         <StyledContainer>
             <TopContainer>
-                <LightPurpleButton onClick={() => {
-                    setIsCartOpen(false)
-                }}>
+                <LightPurpleButton
+                    onClick={() => {
+                        setIsCartOpen(false);
+                    }}
+                >
                     <KeyboardDoubleArrowLeftIcon /> Continue Shopping
                 </LightPurpleButton>
                 {cartDetails.length < 0 || (
@@ -94,16 +116,15 @@ const Cart = ({ setIsCartOpen }) => {
                 <CardGrid container spacing={2}>
                     {cartDetails.map((data, index) => (
                         <Grid
-                            item xs={12}
+                            item
+                            xs={12}
                             key={index}
                             ref={index === 0 ? firstCartItemRef : null}
                         >
                             <CartItem>
                                 <ProductImage src={data.productImage} />
                                 <ProductDetails>
-                                    <Typography variant="h6">
-                                        {data.productName}
-                                    </Typography>
+                                    <Typography variant="h6">{data.productName}</Typography>
                                     <Typography variant="subtitle2">
                                         Original Price: ₹{data.price.mrp}
                                     </Typography>
@@ -156,13 +177,12 @@ const Cart = ({ setIsCartOpen }) => {
                         </Grid>
                     ))}
                     <StyledPaper ref={priceContainerRef}>
-                        <Title>
-                            PRICE DETAILS
-                        </Title>
+                        <Title>PRICE DETAILS</Title>
                         <Divider sx={{ my: 1 }} />
                         <DetailsContainer>
                             Price ({totalQuantity} items) = ₹{totalOGPrice}
-                            <br /><br />
+                            <br />
+                            <br />
                             Discount = ₹{totalOGPrice - totalNewPrice}
                             <Divider sx={{ my: 1 }} />
                             Total Amount = ₹{totalNewPrice}
@@ -186,7 +206,8 @@ const Cart = ({ setIsCartOpen }) => {
                     <Button
                         variant="contained"
                         color="success"
-                        onClick={handleScrollToBottom}>
+                        onClick={handleScrollToBottom}
+                    >
                         View Bill
                     </Button>
                     <Button
@@ -198,7 +219,6 @@ const Cart = ({ setIsCartOpen }) => {
                     </Button>
                 </BottomContainer>
             )}
-
         </StyledContainer>
     );
 };
@@ -221,7 +241,7 @@ const TopContainer = styled.div`
   top: 0;
   padding: 16px;
   background-color: #f8f8f8;
-  z-index:1;
+  z-index: 1;
 `;
 
 const StyledPaper = styled(Paper)`
@@ -256,7 +276,7 @@ const CartItem = styled.div`
 `;
 
 const CartImage = styled.img`
- width: 100%
+  width: 100%;
 `;
 
 const ProductImage = styled.img`

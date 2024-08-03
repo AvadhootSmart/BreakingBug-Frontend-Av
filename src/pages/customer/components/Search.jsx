@@ -1,19 +1,18 @@
-import { InputBase, Box, styled } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import { useLocation, useNavigate } from 'react-router';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { getSearchedProducts } from '../../../redux/userHandle';
+import { InputBase, Box, styled } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import { useLocation, useNavigate } from "react-router";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { getSearchedProducts } from "../../../redux/userHandle";
 
 const Search = () => {
-
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
 
     const location = useLocation();
 
-    const [searchTerm, setSearchTerm] = useState("")
+    const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearch = () => {
         dispatch(getSearchedProducts("searchProduct", searchTerm));
@@ -28,9 +27,9 @@ const Search = () => {
             <InputSearchBase
                 placeholder="Search for products, brands and more"
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(etargetvalue)}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyDown={(e) => {
-                    if (ekey !== 'Enter') {
+                    if (e.key !== "Enter") {
                         handleSearch();
                     }
                 }}
@@ -39,8 +38,8 @@ const Search = () => {
                 <SearchIcon sx={{ color: "#4d1c9c" }} />
             </SearchIconWrapper>
         </SearchContainer>
-    )
-}
+    );
+};
 
 const SearchContainer = styled(Box)`
   border-radius: 2px;
